@@ -3,6 +3,7 @@
 import { format } from "date-fns"
 import type { BookingFormData, SelectedSlot } from "@/types/booking"
 import { ConfirmBooking } from "@/lib/actions"
+import { useEffect, useState } from "react"
 
 interface BookingFormProps {
   selectedSlots: SelectedSlot[]
@@ -11,6 +12,8 @@ interface BookingFormProps {
 }
 
 export function BookingForm({ selectedSlots, onSubmit, onCancel }: BookingFormProps) {
+  const[date, setDate] = useState<string>("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget);
@@ -38,13 +41,27 @@ export function BookingForm({ selectedSlots, onSubmit, onCancel }: BookingFormPr
       email: formData.get("email") as string,
     })
   }
+ 
+  useEffect(()=>{
+    console.log("checking date")
+    if(selectedSlots[0]?.date){
+      console.log("updating date")
+      console.log("new date : ", selectedSlots[0]?.date )
+      setDate(format(new Date(selectedSlots[0]?.date), "MMMM d"))
+    }
+      
+    else
+    setDate(format(new Date(), "MMMM d"))
+  }, [selectedSlots])
+
+
 
   return (
     <div className="bg-white rounded-lg w-full p-6">
       <div className="mb-6">
         <h3 className="font-medium text-[#5f6368] mb-4">Selected slots:</h3>
         <div>
-          <div className="text-lg text-[#1a73e8] mb-3">{format(new Date(selectedSlots[0]?.date), "MMMM d")}</div>
+          <div className="text-lg text-[#1a73e8] mb-3">{date}</div>
           <div className="flex flex-wrap gap-2">
             {selectedSlots.map((slot, i) => (
               <div key={i} className="px-6 py-2 bg-[#1a73e8] text-white rounded-full text-sm font-medium">

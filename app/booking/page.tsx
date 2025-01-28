@@ -16,11 +16,13 @@ export default function BookingPage() {
   useEffect(()=>{
     const searchParams = new URLSearchParams(window.location.search);
     const selectedSlotsParam = searchParams.get("slots");
-    const selectedSlots: SelectedSlot[] = selectedSlotsParam 
+    const selectSlots: SelectedSlot[] = selectedSlotsParam 
       ? JSON.parse(decodeURIComponent(selectedSlotsParam)) 
       : [];
 
-      setSelectedSlots(selectedSlots)
+      setSelectedSlots(selectSlots)
+
+
   }, [])
   
 
@@ -35,10 +37,13 @@ export default function BookingPage() {
     router.push("/")
   }
 
+
+
   return (
     <main className="min-h-screen bg-white font-google-sans p-6">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-medium text-[#202124] mb-6">Complete your booking</h1>
+        
         <BookingForm selectedSlots={selectedSlots} onSubmit={handleFormSubmit} onCancel={() => router.push("/")} />
       </div>
       {bookingDetails && (
