@@ -1,4 +1,4 @@
-import { Query } from 'node-appwrite';
+import { ID, Query } from 'node-appwrite';
 import { database } from './appwrite.config';
 import { SelectedSlot, TimeSlot } from "@/types/booking";
 interface Booking{
@@ -14,11 +14,12 @@ export async function ConfirmBooking(booking: Booking){
     console.log(booking);
     const date = booking.slots[0].date;
     const timesString = booking.slots.map(slot => slot.time).join(',');
+    const id = ID.unique()
     try{
         await database.createDocument(
             process.env.DATABASE_ID!,
             process.env.COLLECTION_ID!,
-            "unique()",
+            id,
             {
                 name: booking.name,
           council: booking.council,
@@ -34,7 +35,7 @@ export async function ConfirmBooking(booking: Booking){
         console.error("Failed to create booking", error);
         
     }
-    
+    return id;
 }
 
 export async function GenerateTimeSlots(date: Date){
@@ -98,4 +99,13 @@ function generateTimeSlots(): TimeSlot[] {
       })
   
     return slots;
+  }
+
+
+  export async function DeleteBooking(id: string){
+    await database.deleteDocument(
+        process.env.DATABASE_ID!,
+            process.env.COLLECTION_ID!,
+            id
+    );
   }

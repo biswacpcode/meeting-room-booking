@@ -65,7 +65,7 @@ const emailContent = `
   <div style="margin-bottom: 20px;">
     <h3 style="font-size: 16px; font-weight: 500; color: #5f6368;">Selected Slots:</h3>
     <div style="font-size: 18px; color: #1a73e8; margin-bottom: 12px;">
-      ${new Date(bookingDetails.slots[0]?.date).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata',month: 'long', day: 'numeric' })}
+      ${new Date(bookingDetails.slots[0]?.date).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata', month: 'long', day: 'numeric' })}
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
       ${bookedslot.map(slot => `
@@ -76,9 +76,10 @@ const emailContent = `
     </div>
   </div>
 
-  <p style="text-align: center; color: #5f6368; margin-top: 20px;">
-    You will receive a confirmation email with the meeting details shortly.
-  </p>
+  <!-- Responsive Button -->
+  <a href=${`https://meeting.webnd-iitbbs.org/cancel/${result}`} style="display: block; width: 100%; max-width: 200px; margin: 20px auto; padding: 12px 24px; background-color: #1a73e8; color: white; text-align: center; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 500;">
+    Cancel Booking
+  </a>
 </div>
 `;
 
