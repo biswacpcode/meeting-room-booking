@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import { BookingForm } from "@/components/booking-form"
 import { ConfirmationModal } from "@/components/confirmation-modal"
@@ -9,12 +9,20 @@ import type { BookingFormData, SelectedSlot } from "@/types/booking"
 
 export default function BookingPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [bookingDetails, setBookingDetails] = useState<(BookingFormData & { slots: SelectedSlot[] }) | null>(null)
+  const [selectedSlots, setSelectedSlots] = useState<SelectedSlot[]>([]);
+  useEffect(()=>{
+    const searchParams = new URLSearchParams(window.location.search);
+    const selectedSlotsParam = searchParams.get("slots");
+    const selectedSlots: SelectedSlot[] = selectedSlotsParam 
+      ? JSON.parse(decodeURIComponent(selectedSlotsParam)) 
+      : [];
 
-  const selectedSlotsParam = searchParams.get("slots")
-  const selectedSlots: SelectedSlot[] = selectedSlotsParam ? JSON.parse(decodeURIComponent(selectedSlotsParam)) : []
+      setSelectedSlots(selectedSlots)
+  }, [])
+  
 
   const handleFormSubmit = (data: BookingFormData) => {
     const bookingData = { ...data, slots: selectedSlots }
