@@ -65,7 +65,7 @@ const emailContent = `
   <div style="margin-bottom: 20px;">
     <h3 style="font-size: 16px; font-weight: 500; color: #5f6368;">Selected Slots:</h3>
     <div style="font-size: 18px; color: #1a73e8; margin-bottom: 12px;">
-      ${new Date(bookingDetails.slots[0]?.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+      ${new Date(bookingDetails.slots[0]?.date).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata',month: 'long', day: 'numeric' })}
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
       ${bookedslot.map(slot => `
